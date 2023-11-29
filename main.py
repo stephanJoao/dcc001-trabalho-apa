@@ -1,17 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import pandas as pd
 
 # criação da lista embaralhada
 def create_shuffled_list(size=10, shuffle_rate=0):
 	arr = list(range(size))
 	n_swaps = int(size * shuffle_rate)
-	print(n_swaps)
-	for i in range(n_swaps):
-		a = np.random.randint(0, size)
-		b = np.random.randint(0, size)
-		arr[a], arr[b] = arr[b], arr[a]
+	# print(n_swaps)
+	# for i in range(n_swaps):
+	# 	a = np.random.randint(0, size)
+	# 	b = np.random.randint(0, size)
+	# 	arr[a], arr[b] = arr[b], arr[a]
+	# return arr
+	swaps = np.random.randint(0, size, n_swaps*2)
+	for i in range(0, n_swaps*2, 2):
+		arr[swaps[i]], arr[swaps[i+1]] = arr[swaps[i+1]], arr[swaps[i]]
 	return arr
+
 
 # métodos de escolha do pivô
 
@@ -84,27 +90,46 @@ def quicksort(arr, lo, hi, find_pivot):
 
 # main
 if __name__ == "__main__":
+	sizes = [2**i for i in range(14, 19)] # [10**i for i in range(1, 7))]
 	shuffle_rates = [0.05, 0.25, 0.45]
-	pivot_functions = [first_pos, middle_pos, median, random_pos, mean]
-	n_experiments = 10
+	pivot_functions = [middle_pos] # [first_pos, middle_pos, median, random_pos, mean]
+	n_experiments = 5 # 10
+	results = []
 	
-	l = create_shuffled_list(size=10000000, shuffle_rate=0.5)
-	# print(l)
-	# get processor time
+	for size in sizes:
+		for shuffle_rate in shuffle_rates:
+			l = create_shuffled_list(size=size, shuffle_rate=shuffle_rate)
+			for pivot_function in pivot_functions:
+				for i in range(n_experiments):
+					start = time.process_time()
+					quicksort(l, 0, size - 1, pivot_function)
+					end = time.process_time()
+					print([size, shuffle_rate, pivot_function.__name__, i, end - start])
+					results.append([size, shuffle_rate, pivot_function.__name__, i, end - start])
 
-	start = time.process_time()
-	print('start: ', start)
-	quicksort(l, 0, len(l) - 1, mean)
-	end = time.process_time()
-	print('end: ', end)
+	results = pd.DataFrame(results, columns=['size', 'shuffle_rate', 'pivot_function', 'experiment', 'time'])
+	# print(results)
+	results.to_csv('results.csv', index=False, sep=';')
+
 	
-	# print(l)
-	print('time: ', end - start)
-	
-	# sizes = [10**i for i in range(1, 6)]
-	# print(sizes)
-	# arr = list(np.random.randint(0, 100000, 100000))
-	# arr = [5, 4, 3, 2, 1]
-	# print(arr)
-	# quicksort(arr, 0, len(arr) - 1, random_pos)
-	# print(arr)
+	df = pd.DataFrame(results)
+	grouped_df = df.groupby(['shuffle_rate', 'pivot_function', 'size'])['time'].mean().reset_index()
+
+	unique_shuffle_rates = grouped_df['shuffle_rate'].unique()
+	unique_pivot_functions = grouped_df['pivot_function'].unique()
+
+	for pivot_function in unique_pivot_functions:
+		for shuffle_rate in unique_shuffle_rates:
+			subset_df = grouped_df[(grouped_df['pivot_function'] == pivot_function) & (grouped_df['shuffle_rate'] == shuffle_rate)]
+
+			plt.plot(subset_df['size'], subset_df['time'], label=f'Shuffle Rate: {shuffle_rate}, Pivot Function: {pivot_function}', marker='o')
+
+			plt.xlabel('Size')
+			plt.ylabel('Time')
+			plt.title(f'Mean Time for Each Size - Pivot Function: {pivot_function}')
+			plt.legend()
+			
+			filename = f'{shuffle_rate}_{pivot_function}.png'
+			plt.savefig(filename)
+			
+			plt.close()
