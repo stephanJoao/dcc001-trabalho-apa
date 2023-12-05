@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import time
 import pandas as pd
 
+import sys
+sys.setrecursionlimit(10**6)
+
 # criação da lista embaralhada
 def create_shuffled_list(size=10, shuffle_rate=0):
 	arr = list(range(size))
@@ -84,32 +87,35 @@ def partition(arr, lo, hi, find_pivot):
 # quicksort
 def quicksort(arr, lo, hi, find_pivot):
 	if lo >= 0 and hi >= 0 and lo < hi:	
+		print('toma tempo????')
 		p = partition(arr, lo, hi, find_pivot)	
 		quicksort(arr, lo, p, find_pivot)
 		quicksort(arr, p + 1, hi, find_pivot)
 
 # main
 if __name__ == "__main__":
-	sizes = [2**i for i in range(14, 19)] # [10**i for i in range(1, 7))]
+	sizes = [10**i for i in range(1, 10)]
 	shuffle_rates = [0.05, 0.25, 0.45]
-	pivot_functions = [middle_pos] # [first_pos, middle_pos, median, random_pos, mean]
-	n_experiments = 5 # 10
+	pivot_functions = [middle_pos, median, random_pos, mean, first_pos]
+	n_experiments = 10
 	results = []
 	
 	for size in sizes:
 		for shuffle_rate in shuffle_rates:
-			l = create_shuffled_list(size=size, shuffle_rate=shuffle_rate)
 			for pivot_function in pivot_functions:
+				results = []
 				for i in range(n_experiments):
+					l = create_shuffled_list(size=size, shuffle_rate=shuffle_rate)
 					start = time.process_time()
 					quicksort(l, 0, size - 1, pivot_function)
 					end = time.process_time()
 					print([size, shuffle_rate, pivot_function.__name__, i, end - start])
 					results.append([size, shuffle_rate, pivot_function.__name__, i, end - start])
+				results = pd.DataFrame(results, columns=['size', 'shuffle_rate', 'pivot_function', 'experiment', 'time'])
+				name = f'results_{size}_{shuffle_rate}_{pivot_function.__name__}.csv'
+				results.to_csv(name, index=False, sep=';')
 
-	results = pd.DataFrame(results, columns=['size', 'shuffle_rate', 'pivot_function', 'experiment', 'time'])
 	# print(results)
-	results.to_csv('results.csv', index=False, sep=';')
 
 	
 	df = pd.DataFrame(results)

@@ -1,0 +1,11 @@
+size;shuffle_rate;pivot_function;experiment;time
+1000000;0.25;random_pos;0;4.453125
+1000000;0.25;random_pos;1;4.5625
+1000000;0.25;random_pos;2;4.453125
+1000000;0.25;random_pos;3;4.28125
+1000000;0.25;random_pos;4;4.359375
+1000000;0.25;random_pos;5;4.390625
+1000000;0.25;random_pos;6;4.65625
+1000000;0.25;random_pos;7;4.453125
+1000000;0.25;random_pos;8;4.421875
+1000000;0.25;random_pos;9;4.46875

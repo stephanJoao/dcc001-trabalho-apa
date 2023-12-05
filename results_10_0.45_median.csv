@@ -1,0 +1,11 @@
+size;shuffle_rate;pivot_function;experiment;time
+10;0.45;median;0;0.0
+10;0.45;median;1;0.0
+10;0.45;median;2;0.0
+10;0.45;median;3;0.0
+10;0.45;median;4;0.0
+10;0.45;median;5;0.0
+10;0.45;median;6;0.0
+10;0.45;median;7;0.0
+10;0.45;median;8;0.0
+10;0.45;median;9;0.0
