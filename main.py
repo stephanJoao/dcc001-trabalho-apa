@@ -54,6 +54,16 @@ def mean(arr, lo, hi):
 def random_pos(arr, lo, hi):
 	return np.random.randint(lo, hi + 1)
 
+# procedimento AchaPivo
+def AchaPivo(arr, lo, hi):
+	pos = lo + 1
+	while pos <= hi:
+		if arr[pos] >= arr[pos-1]:
+			pos += 1
+		else:
+			return pos
+	return hi
+
 # método de partição (Hoare's)
 def partition(arr, lo, hi, find_pivot):
 	# choose pivot
