@@ -54,20 +54,23 @@ def mean(arr, lo, hi):
 def random_pos(arr, lo, hi):
 	return np.random.randint(lo, hi + 1)
 
-# procedimento AchaPivo
-def AchaPivo(arr, lo, hi):
+# procedimento "Acha Pivô"
+def acha_pivo(arr, lo, hi):
 	pos = lo + 1
-	while pos <= hi:
-		if arr[pos] >= arr[pos-1]:
+	while pos < hi:
+		if arr[pos - 1] <= arr[pos]:
 			pos += 1
 		else:
 			return pos
-	return hi
+	return -1
 
 # método de partição (Hoare's)
 def partition(arr, lo, hi, find_pivot):
 	# choose pivot
-	pivot_value = arr[find_pivot(arr, lo, hi)]
+	pivot = find_pivot(arr, lo, hi)
+	if pivot == -1:
+		return -1
+	pivot_value = arr[pivot]
 	# print('pivot value: ', pivot_value)
 
 	# left index
@@ -97,17 +100,19 @@ def partition(arr, lo, hi, find_pivot):
 # quicksort
 def quicksort(arr, lo, hi, find_pivot):
 	if lo >= 0 and hi >= 0 and lo < hi:	
-		print('toma tempo????')
 		p = partition(arr, lo, hi, find_pivot)	
+		if p == -1:
+			return
 		quicksort(arr, lo, p, find_pivot)
 		quicksort(arr, p + 1, hi, find_pivot)
 
 # main
 if __name__ == "__main__":
-	sizes = [10**i for i in range(1, 9)]
+	'''sizes = [10**i for i in range(1, 9)]
 	shuffle_rates = [0.05, 0.25, 0.45]
 	pivot_functions = [middle_pos, median, random_pos, mean, first_pos]
-	n_experiments = 10
+	pivot_functions = [acha_pivo]
+	n_experiments = 10'''
 	
 	'''results = []
 	
@@ -124,7 +129,7 @@ if __name__ == "__main__":
 					results.append([size, shuffle_rate, pivot_function.__name__, i, end - start])
 				results = pd.DataFrame(results, columns=['size', 'shuffle_rate', 'pivot_function', 'experiment', 'time'])
 				name = f'results/results_{size}_{shuffle_rate}_{pivot_function.__name__}.csv'
-				results.to_csv(name, index=False, sep=';')''' # experiments
+				results.to_csv(name, index=False, sep=';') # experiments
 
 	# append all results to one file
 	results = pd.DataFrame()
@@ -197,4 +202,4 @@ if __name__ == "__main__":
 			
 		filename = f'plots/comparison/{shuffle_rate}_log.png'
 		plt.savefig(filename)
-		plt.close()
+		plt.close()'''
