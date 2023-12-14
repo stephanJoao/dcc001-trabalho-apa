@@ -108,11 +108,11 @@ def quicksort(arr, lo, hi, find_pivot):
 
 # main
 if __name__ == "__main__":
-	'''sizes = [10**i for i in range(1, 9)]
+	sizes = [10**i for i in range(1, 9)]
 	shuffle_rates = [0.05, 0.25, 0.45]
-	pivot_functions = [middle_pos, median, random_pos, mean, first_pos]
-	pivot_functions = [acha_pivo]
-	n_experiments = 10'''
+	pivot_functions = [middle_pos, median, random_pos, mean, first_pos, acha_pivo]
+	# pivot_functions = []
+	n_experiments = 10
 	
 	'''results = []
 	
@@ -129,7 +129,9 @@ if __name__ == "__main__":
 					results.append([size, shuffle_rate, pivot_function.__name__, i, end - start])
 				results = pd.DataFrame(results, columns=['size', 'shuffle_rate', 'pivot_function', 'experiment', 'time'])
 				name = f'results/results_{size}_{shuffle_rate}_{pivot_function.__name__}.csv'
-				results.to_csv(name, index=False, sep=';') # experiments
+				results.to_csv(name, index=False, sep=';') # experiments'''
+
+
 
 	# append all results to one file
 	results = pd.DataFrame()
@@ -202,4 +204,4 @@ if __name__ == "__main__":
 			
 		filename = f'plots/comparison/{shuffle_rate}_log.png'
 		plt.savefig(filename)
-		plt.close()'''
+		plt.close()
