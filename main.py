@@ -160,8 +160,9 @@ if __name__ == "__main__":
 			plt.plot(subset_df['size'], subset_df['time'], label=f'Shuffle Rate: {shuffle_rate}, Pivot Function: {pivot_function}', marker='o')
 
 			plt.xlabel('Size')
-			plt.ylabel('Time')
-			plt.title(f'Mean Time for Each Size - Pivot Function: {pivot_function}')
+			plt.ylabel('Time (seconds)')
+
+			plt.title(f'Mean Time for Pivot Function: {pivot_function}')
 			plt.legend()
 			
 			filename = f'plots/normal/{shuffle_rate}_{pivot_function}.png'
@@ -177,11 +178,11 @@ if __name__ == "__main__":
 
 			plt.plot(subset_df['size'], subset_df['time'], label=f'Shuffle Rate: {shuffle_rate}, Pivot Function: {pivot_function}', marker='o')
 
-			plt.xlabel('Size')
-			plt.ylabel('Time')
+			plt.xlabel('Size (logscale)')
 			plt.xscale('log')
-			plt.yscale('log')
-			plt.title(f'Mean Time for Each Size - Pivot Function: {pivot_function}')
+			plt.ylabel('Time (seconds)')
+
+			plt.title(f'Mean Time for Pivot Function: {pivot_function}')
 			plt.legend()
 			
 			filename = f'plots/logscale/{shuffle_rate}_{pivot_function}_log.png'
@@ -198,8 +199,25 @@ if __name__ == "__main__":
 			plt.plot(subset_df['size'], subset_df['time'], label=pivot_function, marker='o')
 			
 			plt.xlabel('Size')
-			plt.ylabel('Time')
-			plt.title(f'Mean Time for Each Size - Size: {size}')
+			plt.ylabel('Time (seconds)')
+
+			plt.title(f'Comparison for Each Shuffle Rate: {shuffle_rate}')
+			plt.legend()			
+			
+		filename = f'plots/comparison/{shuffle_rate}.png'
+		plt.savefig(filename)
+		plt.close()
+
+		for pivot_function in unique_pivot_functions:
+			subset_df = grouped_df[(grouped_df['pivot_function'] == pivot_function) & (grouped_df['shuffle_rate'] == shuffle_rate)]
+
+			plt.plot(subset_df['size'], subset_df['time'], label=pivot_function, marker='o')
+			
+			plt.xlabel('Size (logscale)')
+			plt.xscale('log')
+			plt.ylabel('Time (seconds)')
+
+			plt.title(f'Comparison for Each Shuffle Rate: {shuffle_rate}')
 			plt.legend()			
 			
 		filename = f'plots/comparison/{shuffle_rate}_log.png'
