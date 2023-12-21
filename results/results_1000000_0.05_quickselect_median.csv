@@ -1,0 +1,11 @@
+size;shuffle_rate;pivot_function;experiment;time
+1000000;0.05;quickselect_median;0;2.03125
+1000000;0.05;quickselect_median;1;2.15625
+1000000;0.05;quickselect_median;2;2.21875
+1000000;0.05;quickselect_median;3;2.265625
+1000000;0.05;quickselect_median;4;2.21875
+1000000;0.05;quickselect_median;5;2.1875
+1000000;0.05;quickselect_median;6;2.125
+1000000;0.05;quickselect_median;7;2.109375
+1000000;0.05;quickselect_median;8;2.21875
+1000000;0.05;quickselect_median;9;2.15625

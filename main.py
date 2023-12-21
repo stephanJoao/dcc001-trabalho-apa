@@ -44,6 +44,20 @@ def median(arr, lo, hi):
 		arr[lo], arr[mid] = arr[mid], arr[lo]
 	return mid
 
+# mediana com quickselect
+def quickselect_median(arr, lo, hi):
+	if lo == hi:
+		return lo
+	pos = partition(arr, lo, hi, median)
+	if pos == -1:
+		return -1
+	if pos == (hi - lo) // 2 + lo:
+		return pos
+	elif pos > (hi - lo) // 2 + lo:
+		return quickselect_median(arr, lo, pos - 1)
+	else:
+		return quickselect_median(arr, pos + 1, hi)
+
 # média
 def mean(arr, lo, hi):
 	arr_mean = np.mean(arr[lo:hi + 1])
@@ -110,13 +124,13 @@ def quicksort(arr, lo, hi, find_pivot):
 if __name__ == "__main__":
 	sizes = [10**i for i in range(1, 9)]
 	shuffle_rates = [0.05, 0.25, 0.45]
-	pivot_functions = [middle_pos, median, random_pos, mean, first_pos, acha_pivo]
-	# pivot_functions = []
+	pivot_functions = [middle_pos, median, random_pos, mean, first_pos, acha_pivo, quickselect_median]
+	# pivot_functions = [quickselect_median]
 	n_experiments = 10
 	
-	'''results = []
+	results = []
 	
-	for size in sizes:
+	'''for size in sizes:
 		for shuffle_rate in shuffle_rates:
 			for pivot_function in pivot_functions:
 				results = []
